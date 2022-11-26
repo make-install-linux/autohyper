@@ -1,0 +1,21 @@
+!#/usr/bin/bash
+
+HYPER_PATH=$HOME/.hyper
+HYPER_PATH_BIN=$HYPER_PATH/bin
+
+mkdir -p $HYPER_PATH_BIN
+
+for release_file in $(curl https://api.github.com/repos/vercel/hyper/releases/latest | jq '.assets | .[] | .browser_download_url' | sed 's/"//g')
+do
+  if grep -q ".AppImage" <<< $release_file && ! grep -q "arm" <<< $release_file 
+  then
+    echo -e "\nDownloading..."
+    echo $release_file
+    curl -LJ -o $HYPER_PATH_BIN/hyper "$release_file"
+    chmod +x $HYPER_PATH_BIN/hyper
+    rm -rf *.AppImage
+  fi
+done
+
+mv ./hyper-icon.svg $HOME/.local/share/icons/
+desktop-file-install --dir=$HOME/.local/share/applications ./hyper.desktop

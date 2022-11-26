@@ -1,0 +1,9 @@
+[Desktop Entry]
+
+Comment=Hyper Terminal
+Name=Hyper
+Exec=sh -c "\\$HOME/.hyper/bin/hyper"
+Icon=hyper-icon
+Type=Application
+Terminal=false
+
